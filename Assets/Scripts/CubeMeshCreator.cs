@@ -9,6 +9,8 @@ public class CubeMeshCreator : MonoBehaviour
     public Vector3[] vertices;
     public int[] triangles;
     
+    public Vector3[] verticesInitialPos;
+    
     
     // Start is called before the first frame update
     void Start()
@@ -27,6 +29,8 @@ public class CubeMeshCreator : MonoBehaviour
         {
             //vertices[i] = RotateX(vertices[i], 0.03f);
         }
+
+        SnakeLikeMovement();
         UpdateMesh();
     }
 
@@ -49,39 +53,39 @@ public class CubeMeshCreator : MonoBehaviour
         startingVertices.Add(new Vector3(0.5f, 0.5f, -0.5f));//1
         startingVertices.Add(new Vector3(-0.5f, -0.5f, -0.5f));//2
         startingVertices.Add(new Vector3(0.5f, -0.5f, -0.5f));//3
-        startingVertices.Add(new Vector3(0.5f, 0.5f, 0.5f));//4
-        startingVertices.Add(new Vector3(0.5f, -0.5f, 0.5f));//5
-        startingVertices.Add( new Vector3(-0.5f, 0.5f, 0.5f));//6
-        startingVertices.Add(new Vector3(-0.5f, -0.5f, 0.5f));//7
+        startingVertices.Add(new Vector3(-0.5f, 0.5f, 0));//4
+        startingVertices.Add(new Vector3(0.5f, 0.5f, 0));//5
+        startingVertices.Add( new Vector3(-0.5f, -0.5f, 0));//6
+        startingVertices.Add(new Vector3(0.5f, -0.5f, 0));//7
 
         List<int> startingTriangles = new List<int>
         {
             0, 1, 2,
             1, 3, 2,
-            1, 4, 3,
-            4, 5, 3,
+            1, 5, 3,
+            5, 7, 3,
+            0, 4, 5,
+            0, 5, 1,
             0, 6, 4,
-            0, 4, 1,
-            0, 7, 6,
-            0, 2, 7,
-            6, 7, 4,
-            7, 5, 4,
-            2, 3, 5,
-            2, 5, 7
+            0, 2, 6,
+            4, 6, 5,
+            6, 7, 5,
+            2, 3, 7,
+            2, 7, 6 
         };
 
-        for (int y = 1; y <= 5; y++)
+        for (int y = 0; y < 20; y++)
         {
-            int amount = 8 * y;
-            for (int i = amount - 8; i < amount; i++)
+            int amount = 8 + 4 * y;
+            for (int i = amount - 4; i < amount; i++)
             {
-                startingVertices.Add(startingVertices[i] + new Vector3(0, 0, 1));
+                startingVertices.Add(startingVertices[i] + new Vector3( 0, 0, 0.5f)); //0.5f*Mathf.Cos(y*30 * Mathf.Deg2Rad)
             }
         
-            int amount2 = 36 * y;
-            for (int i = amount2 - 36; i < amount2; i++)
+            int amount2 = 36 + 30 * y;
+            for (int i = amount2 - 30; i < amount2; i++)
             {
-                startingTriangles.Add(startingTriangles[i] + 8);
+                startingTriangles.Add(startingTriangles[i] + 4);
             }
         }
 
@@ -92,6 +96,8 @@ public class CubeMeshCreator : MonoBehaviour
         {
             
         }
+
+        verticesInitialPos = vertices.Clone() as Vector3[];
     }
 
     void UpdateMesh()
@@ -102,5 +108,16 @@ public class CubeMeshCreator : MonoBehaviour
         mesh.triangles = triangles;
         
         mesh.RecalculateNormals();
+    }
+
+    void SnakeLikeMovement()
+    {
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            int chunk = (i / 4) + 1;
+
+            float diramount = Mathf.Sin(chunk * 10 * Time.time * Mathf.Deg2Rad);
+            vertices[i] = verticesInitialPos[i] + new Vector3(0.5f*diramount, 0, 0);
+        }
     }
 }
