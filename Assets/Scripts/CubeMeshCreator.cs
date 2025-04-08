@@ -12,6 +12,7 @@ public class CubeMeshCreator : MonoBehaviour
     public Vector3[] verticesInitialPos;
     
     
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -114,10 +115,11 @@ public class CubeMeshCreator : MonoBehaviour
     {
         for (int i = 0; i < vertices.Length; i++)
         {
-            int chunk = (i / 4) + 1;
-
-            float diramount = Mathf.Sin(chunk * 10 * Time.time * Mathf.Deg2Rad);
-            vertices[i] = verticesInitialPos[i] + new Vector3(0.5f*diramount, 0, 0);
+            int chunk = (i / 4) + 1 ;
+            float startCos = chunk * 30 * Mathf.Deg2Rad;
+             float diramount = 1 * Mathf.Cos(startCos + (Time.time * 90 * Mathf.Deg2Rad));
+            //float diramount = (Mathf.Cos(startCos)) * Mathf.Sin((Time.time * 90 * Mathf.Deg2Rad));
+            vertices[i] = verticesInitialPos[i] + new Vector3(1*diramount, 0, 0);
         }
     }
 }
