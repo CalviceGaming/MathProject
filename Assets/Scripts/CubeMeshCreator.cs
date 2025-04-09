@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,8 @@ using UnityEngine;
 public class CubeMeshCreator : MonoBehaviour
 {
     public Mesh mesh;
+
+    [SerializeField] private float fuckedUpVariable;
 
     public Vector3[] vertices;
     public int[] triangles;
@@ -26,13 +29,17 @@ public class CubeMeshCreator : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        for(int i = 0; i < vertices.Length; i++)
+        for(int i = 0; i < verticesInitialPos.Length; i++)
         {
-            //vertices[i] = RotateX(vertices[i], 0.03f);
+            verticesInitialPos[i] = RotateZ(verticesInitialPos[i], 0.03f);
         }
 
+        //EatApple();
         SnakeLikeMovement();
         UpdateMesh();
+                                                                                                                                                                                                                                                                                                                                                                                                                                            {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                //Fucked Up Statement
+                                                                                                                                                                                                                                                                                                                                                                                                                                            }
     }
 
     Vector3 RotateX(Vector3 vertex, float angle)
@@ -51,10 +58,21 @@ public class CubeMeshCreator : MonoBehaviour
         float cosTheta = Mathf.Cos(angle);
         float sinTheta = Mathf.Sin(angle);
         
-        float newX = vertex.y * cosTheta - vertex.z * sinTheta;
-        float newY = vertex.y * sinTheta + vertex.z * cosTheta;
+        float newX = vertex.x * cosTheta - vertex.y * sinTheta;
+        float newY = vertex.x * sinTheta + vertex.y * cosTheta;
         
         return new Vector3(newX, newY, vertex.z);
+    }
+
+    void EatApple()
+    {
+        for (int i = 0; i < vertices.Length; i++)
+        {
+            int chunk = (i / 4) + 1 ;
+            float newX = vertices[i].x * (1 + (Mathf.Cos(chunk * Time.time * Mathf.Deg2Rad)));
+            float newY = vertices[i].y * (1 + (Mathf.Cos(chunk * Time.time * Mathf.Deg2Rad)));
+            vertices[i] = new Vector3(newX, newY, vertices[i].z);
+        }
     }
 
     void CreateMesh()
@@ -128,7 +146,7 @@ public class CubeMeshCreator : MonoBehaviour
         {
             int chunk = (i / 4) + 1 ;
             float startCos = chunk * 30 * Mathf.Deg2Rad;
-             float diramount = 1 * Mathf.Cos(startCos + (Time.time * 90 * Mathf.Deg2Rad));
+             float diramount = fuckedUpVariable * Mathf.Cos(startCos + (Time.time * 90 * Mathf.Deg2Rad));
             //float diramount = (Mathf.Cos(startCos)) * Mathf.Sin((Time.time * 90 * Mathf.Deg2Rad));
             vertices[i] = verticesInitialPos[i] + new Vector3(1*diramount, 0, 0);
         }
