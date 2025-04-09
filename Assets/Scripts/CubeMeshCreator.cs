@@ -45,6 +45,17 @@ public class CubeMeshCreator : MonoBehaviour
         
         return new Vector3(vertex.x, newY, newZ);
     }
+    
+    Vector3 RotateZ(Vector3 vertex, float angle)
+    {
+        float cosTheta = Mathf.Cos(angle);
+        float sinTheta = Mathf.Sin(angle);
+        
+        float newX = vertex.y * cosTheta - vertex.z * sinTheta;
+        float newY = vertex.y * sinTheta + vertex.z * cosTheta;
+        
+        return new Vector3(newX, newY, vertex.z);
+    }
 
     void CreateMesh()
     {
