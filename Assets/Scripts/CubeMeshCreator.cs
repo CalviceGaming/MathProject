@@ -33,9 +33,9 @@ public class CubeMeshCreator : MonoBehaviour
         {
             verticesInitialPos[i] = RotateZ(verticesInitialPos[i], 0.03f);
         }
-
-        //EatApple();
+        
         SnakeLikeMovement();
+        EatApple();
         UpdateMesh();
                                                                                                                                                                                                                                                                                                                                                                                                                                             {
                                                                                                                                                                                                                                                                                                                                                                                                                                                 //Fucked Up Statement
@@ -69,8 +69,8 @@ public class CubeMeshCreator : MonoBehaviour
         for (int i = 0; i < vertices.Length; i++)
         {
             int chunk = (i / 4) + 1 ;
-            float newX = vertices[i].x * (1 + (Mathf.Cos(chunk * Time.time * Mathf.Deg2Rad)));
-            float newY = vertices[i].y * (1 + (Mathf.Cos(chunk * Time.time * Mathf.Deg2Rad)));
+            float newX = vertices[i].x * (1 + Mathf.Cos(chunk * Time.time * Mathf.Deg2Rad));
+            float newY = vertices[i].y * (1 + Mathf.Cos(chunk * Time.time * Mathf.Deg2Rad));
             vertices[i] = new Vector3(newX, newY, vertices[i].z);
         }
     }
