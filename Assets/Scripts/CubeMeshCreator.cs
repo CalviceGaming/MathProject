@@ -11,8 +11,9 @@ public class CubeMeshCreator : MonoBehaviour
 
     public Vector3[] vertices;
     public int[] triangles;
-    
+
     public Vector3[] verticesInitialPos;
+    public Vector3[] verticesEatInitialPos;
     
     
     
@@ -34,8 +35,8 @@ public class CubeMeshCreator : MonoBehaviour
             verticesInitialPos[i] = RotateZ(verticesInitialPos[i], 0.03f);
         }
         
-        SnakeLikeMovement();
         EatApple();
+        SnakeLikeMovement();
         UpdateMesh();
                                                                                                                                                                                                                                                                                                                                                                                                                                             {
                                                                                                                                                                                                                                                                                                                                                                                                                                                 //Fucked Up Statement
@@ -66,12 +67,12 @@ public class CubeMeshCreator : MonoBehaviour
 
     void EatApple()
     {
-        for (int i = 0; i < vertices.Length; i++)
+        for (int i = 0; i < verticesInitialPos.Length; i++)
         {
             int chunk = (i / 4) + 1 ;
-            float newX = vertices[i].x * (1 + Mathf.Cos(chunk * Time.time * Mathf.Deg2Rad));
-            float newY = vertices[i].y * (1 + Mathf.Cos(chunk * Time.time * Mathf.Deg2Rad));
-            vertices[i] = new Vector3(newX, newY, vertices[i].z);
+            float newX = verticesInitialPos[i].x * (1 + Mathf.Abs(Mathf.Sin(chunk * 10 + Time.time * 30 * Mathf.Deg2Rad)));
+            float newY = verticesInitialPos[i].y * (1 + Mathf.Abs(Mathf.Sin(chunk * 10 + Time.time * 30 * Mathf.Deg2Rad)));
+            verticesEatInitialPos[i] = new Vector3(newX, newY, verticesInitialPos[i].z);
         }
     }
 
@@ -128,6 +129,7 @@ public class CubeMeshCreator : MonoBehaviour
         }
 
         verticesInitialPos = vertices.Clone() as Vector3[];
+        verticesEatInitialPos = vertices.Clone() as Vector3[];
     }
 
     void UpdateMesh()
@@ -148,7 +150,7 @@ public class CubeMeshCreator : MonoBehaviour
             float startCos = chunk * 30 * Mathf.Deg2Rad;
              float diramount = fuckedUpVariable * Mathf.Cos(startCos + (Time.time * 90 * Mathf.Deg2Rad));
             //float diramount = (Mathf.Cos(startCos)) * Mathf.Sin((Time.time * 90 * Mathf.Deg2Rad));
-            vertices[i] = verticesInitialPos[i] + new Vector3(1*diramount, 0, 0);
+            vertices[i] = verticesEatInitialPos[i] + new Vector3(1*diramount, 0, 0);
         }
     }
 }

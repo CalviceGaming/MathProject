@@ -565,6 +565,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mesh: {fileID: 0}
+  fuckedUpVariable: 1
   vertices: []
   triangles: 
   verticesInitialPos: []
