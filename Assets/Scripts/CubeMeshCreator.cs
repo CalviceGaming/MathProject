@@ -62,17 +62,17 @@ public class CubeMeshCreator : MonoBehaviour
     
     void BezierCurveMovement() 
     {
-        Vector3 p0 = new Vector3(-0.5f, 0, 0); 
-        Vector3 p1 = new Vector3(-1f, 0f, 0); 
-        Vector3 p2 = new Vector3(1f, 0f, 0); 
-        Vector3 p3 = new Vector3(0.5f, 0, 0); 
+        Vector3 p0 = new Vector3(0f, 0, 0); 
+        Vector3 p1 = new Vector3(-10f, 0f, 0); 
+        Vector3 p2 = new Vector3(10f, 0f, 0); 
+        Vector3 p3 = new Vector3(0f, 0, 0); 
 
         float t = Time.time * 0.5f; 
 
         for (int i = 0; i < vertices.Length; i++) 
         { 
             int chunk = (i / 4) + 1; 
-            float localT = Mathf.PingPong(t + chunk * 0.05f, 1); 
+            float localT = Mathf.Repeat(t + chunk * 0.05f, 1); 
             Vector3 offset = CubicBezier(p0, p1, p2, p3, localT); 
             vertices[i] = verticesEatInitialPos[i] + new Vector3(offset.x, offset.y, 0); 
         }
