@@ -32,15 +32,50 @@ public class CubeMeshCreator : MonoBehaviour
     {
         for(int i = 0; i < verticesInitialPos.Length; i++)
         {
-            verticesInitialPos[i] = RotateZ(verticesInitialPos[i], 0.03f);
+            //verticesInitialPos[i] = RotateZ(verticesInitialPos[i], 0.03f);
         }
         
-        EatApple();
-        SnakeLikeMovement();
+        //EatApple();
+        //SnakeLikeMovement();
+        BezierCurveMovement();
         UpdateMesh();
                                                                                                                                                                                                                                                                                                                                                                                                                                             {
                                                                                                                                                                                                                                                                                                                                                                                                                                                 //Fucked Up Statement
                                                                                                                                                                                                                                                                                                                                                                                                                                             }
+    }
+    
+    Vector3 CubicBezier(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
+    {
+        float u = 1 - t;
+        float tt = t * t;
+        float uu = u * u;
+        float uuu = uu * u;
+        float ttt = tt * t;
+
+        Vector3 point = uuu * p0;
+        point += 3 * uu * t * p1;
+        point += 3 * u * tt * p2;
+        point += ttt * p3;
+
+        return point;
+    }
+    
+    void BezierCurveMovement() 
+    {
+        Vector3 p0 = new Vector3(-0.5f, 0, 0); 
+        Vector3 p1 = new Vector3(-1f, 0f, 0); 
+        Vector3 p2 = new Vector3(1f, 0f, 0); 
+        Vector3 p3 = new Vector3(0.5f, 0, 0); 
+
+        float t = Time.time * 0.5f; 
+
+        for (int i = 0; i < vertices.Length; i++) 
+        { 
+            int chunk = (i / 4) + 1; 
+            float localT = Mathf.PingPong(t + chunk * 0.05f, 1); 
+            Vector3 offset = CubicBezier(p0, p1, p2, p3, localT); 
+            vertices[i] = verticesEatInitialPos[i] + new Vector3(offset.x, offset.y, 0); 
+        }
     }
 
     Vector3 RotateX(Vector3 vertex, float angle)
@@ -119,7 +154,6 @@ public class CubeMeshCreator : MonoBehaviour
                 startingTriangles.Add(startingTriangles[i] + 4);
             }
         }
-
         
         vertices = startingVertices.ToArray();
         triangles = startingTriangles.ToArray();
